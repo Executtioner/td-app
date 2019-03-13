@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name" >tour<font fgcolor='#00ff55'>desk</font> app</string>
+    <string name="app_name">tour<font fgcolor='#00ff55'>desk</font> app</string>
     <string name="status_stop"><font fgcolor='#000000'>Stopped</font><font fgcolor='#00ff55'>Stopped2</font></string>
 </resources>

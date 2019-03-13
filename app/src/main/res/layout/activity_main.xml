@@ -58,12 +58,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:orientation="horizontal"
+        android:gravity="center"
         android:layout_marginRight="3dp"
         >
 
         <ImageView
             android:layout_width="390dp"
             android:id="@+id/wall"
+            android:layout_gravity="center"
             android:layout_height="390dp"
             android:src="@drawable/wall"
             />
