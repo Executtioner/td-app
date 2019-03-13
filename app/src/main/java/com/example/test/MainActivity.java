@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final int REQUEST_CODE_QR_SCAN = 101;
     private static final String TAG = MainActivity.class.getSimpleName();
     private TextView text;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private final int SELECT_PICTURE = 300;
     private String mPath;
     private ImageView mSetImage;
+    private Button scan;
 
 
     @Override
@@ -79,19 +82,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSetImage = (ImageView) findViewById(R.id.wall);
+
+        scan = (Button)findViewById(R.id.button);
+
         checkAndroidVersion();
 
     }
 
     public void onClick(View v) {
 
+            scan.setEnabled(false);
             Intent i = new Intent(MainActivity.this, QrCodeActivity.class);
             startActivityForResult(i, REQUEST_CODE_QR_SCAN);
 
     }
 
     public void onClick2(View v) {
-
         CustomDialogClass cdd = new CustomDialogClass(MainActivity.this);
         cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         cdd.show();
@@ -118,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 }else if(option[which] == "Elegir de galeria"){
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
                 }else {
                     dialog.dismiss();
@@ -155,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode != Activity.RESULT_OK) {
+            scan.setEnabled(true);
             Toast.makeText(getApplicationContext(), "Cámara Cerrada", Toast.LENGTH_SHORT).show();
             if(data == null)
                 return;
@@ -167,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_QR_SCAN) {
             if (data != null) {
                 String lectura = data.getStringExtra("com.blikoon.qrcodescanner.got_qr_scan_relult");
+                scan.setEnabled(true);
                 createLoginDialogo(lectura);
             }
         }
@@ -241,13 +250,13 @@ public class MainActivity extends AppCompatActivity {
                     }else if(response.code() == 201){
                         showToast( "Code: " + response.code() + " Sin Contenido", R.drawable.warning);
                     }else if(response.code() == 202){
-                        showToast( "Code: " + response.code() + " Invalid field: booking_number", R.drawable.warning);
+                        showToast( "Code: " + response.code() + " Error 202: Error al enviar Datos", R.drawable.warning);
                     }else if(response.code() == 203){
                         showToast( "Code: " + response.code() + " Reserva no encontrada", R.drawable.warning);
                     }else if(response.code() == 204){
-                        showToast( "Code: " + response.code() + " Invalid field: travelers_present", R.drawable.warning);
+                        showToast( "Code: " + response.code() + " Error 204: Error al enviar Datos", R.drawable.warning);
                     }else if(response.code() == 205){
-                        showToast( "Code: " + response.code() + " Travelers_present already received", R.drawable.warning);
+                        showToast( "Code: " + response.code() + " Codigo registrado anteriormente", R.drawable.warning);
                     }else if(response.code() == 404){
                         showToast( "Code: " + response.code() + " Sin Conexion con el Servidor", R.drawable.warning);
                     }else{
@@ -267,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     public void createLoginDialogo(final String bn) {
 
         final TextView title = new TextView(this);
-        title.setText("Test");
+        title.setText("Confirmación");
         title.setGravity(Gravity.CENTER);
         title.setTextSize(30);
 
@@ -311,7 +320,6 @@ public class MainActivity extends AppCompatActivity {
                         }else{
 
                             showToast("Sin conexión a la Red", R.drawable.cancel);
-                            //Toast.makeText(getApplicationContext(), "Sin conexión a la Red" , Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -357,6 +365,8 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             // code for lollipop and pre-lollipop devices
+            showToast("OLD", R.drawable.okay);
+
         }
 
     }
@@ -393,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_ID_MULTIPLE_PERMISSIONS: {
 
                 Map<String, Integer> perms = new HashMap<>();
-                // Initialize the map with both permissions
+
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
@@ -404,14 +414,10 @@ public class MainActivity extends AppCompatActivity {
                     // Check for both permissions
                     if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        Log.d("in fragment on request", "CAMERA & WRITE_EXTERNAL_STORAGE READ_EXTERNAL_STORAGE permission granted");
-                        // process the normal flow
+
                         //else any one or both the permissions are not granted
                     } else {
-                        Log.d("in fragment on request", "Some permissions are not granted ask again ");
-                        //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
-//                        // shouldShowRequestPermissionRationale will return true
-                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
+
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             showDialogOK("Los Permisos de Cámara y Almacenamiento son necesarios para el funcionamiento de esta aplicacion. Sin ellos, la app cerrara.",
                                     new DialogInterface.OnClickListener() {
@@ -429,13 +435,11 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     });
                         }
-                        //permission is denied (and never ask again is  checked)
-                        //shouldShowRequestPermissionRationale will return false
+
                         else {
+
                             System.exit(0);
-                            Toast.makeText(this, "Habilita los permisos", Toast.LENGTH_LONG)
-                                    .show();
-                            //                            //proceed with logic by disabling the related features or quit the app.
+
                         }
                     }
                 }
