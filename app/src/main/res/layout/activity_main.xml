@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:id="@+id/act"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+
+        >
+
+    <ImageView
+        android:layout_width="0dp"
+        android:id="@+id/imgV"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/backpacker"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:text="tourdesk app"
+        android:textSize="30dp"
+        android:gravity="center"
+
+         />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:layout_marginRight="3dp"
+        >
+
+        <ImageView
+            android:layout_width="390dp"
+            android:id="@+id/wall"
+            android:layout_height="390dp"
+            android:src="@drawable/wall"
+            />
+
+    </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/white" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:textSize="20dp"
+        android:text="Escanear Codigo"
+        android:drawableLeft="@drawable/qr"
+         />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClick2"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:textSize="20dp"
+                android:text="Open Dialog Test"
+                android:drawableLeft="@drawable/qr"
+                />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClick3"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:textSize="20dp"
+                android:text="CAM"
+                android:drawableLeft="@drawable/qr"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
