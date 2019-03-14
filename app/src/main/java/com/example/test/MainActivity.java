@@ -121,10 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
                     openCamera();
 
-                }else if(option[which] == "Elegir de galeria"){
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                }else if(option[which] == "Elegir de galería"){
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
                 }else {
                     dialog.dismiss();
@@ -204,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         fOut.flush(); // Not really required
                         fOut.close(); // do not forget to close the stream
-                        MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
+                        //MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -244,9 +243,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
-                    Log.d(TAG, "Request bn:" + response.code());
                     if(response.code() == 200){
-                        showToast("Code: " + response.code() + " Success", R.drawable.okay);
+                        showToast( "Code: " + response.code() + " Success", R.drawable.okay);
                     }else if(response.code() == 201){
                         showToast( "Code: " + response.code() + " Sin Contenido", R.drawable.warning);
                     }else if(response.code() == 202){
@@ -291,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
 
                 .setCustomTitle(title)
-                .setMessage("Ingresar el numero de pasajeros")
+                .setMessage("Ingresar la cantidad de asistentes")
                 .setView(travelers)
                 .setCancelable(false)
                 .setPositiveButton("Ingresar", new DialogInterface.OnClickListener() {
@@ -306,12 +304,12 @@ public class MainActivity extends AppCompatActivity {
 
                             }catch (Exception e){
 
-                                showToast("Debe Ingresar un numero", R.drawable.warning);
+                                showToast("Debe ingresar un número", R.drawable.warning);
 
                             }
 
                             if(trav == 0 ){
-                                showToast("El numero debe ser mayor a 0", R.drawable.warning);
+                                showToast("El número debe ser mayor a 0", R.drawable.warning);
                             }else {
                                 showToast("Registrando...", R.drawable.hiker);
                                 create(bn, trav);
@@ -419,7 +417,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
 
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            showDialogOK("Los Permisos de Cámara y Almacenamiento son necesarios para el funcionamiento de esta aplicacion. Sin ellos, la app cerrara.",
+                            showDialogOK("Los Permisos de Cámara y Almacenamiento son necesarios para el funcionamiento de esta aplicacion. Sin ellos, la app cerrará.",
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
