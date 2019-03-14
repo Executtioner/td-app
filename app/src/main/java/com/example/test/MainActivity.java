@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private TextView text;
     private ImageView img;
-    private final static String API_KEY = "";
+    //private final static String API_KEY = "";
 
     private static String APP_DIRECTORY = "test/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
@@ -191,17 +191,17 @@ public class MainActivity extends AppCompatActivity {
 
                     // Assume block needs to be inside a Try/Catch block.
                     OutputStream fOut = null;
-                    File file = new File(mPath); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+                    File file = new File(mPath);
                     try {
                         fOut = new FileOutputStream(file);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
 
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed
                     try {
-                        fOut.flush(); // Not really required
-                        fOut.close(); // do not forget to close the stream
+                        fOut.flush();
+                        fOut.close();
                         //MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -337,13 +337,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void showToast(String message, int icon)
     {
-        // Get the custom layout view.
+
         View toastView = getLayoutInflater().inflate(R.layout.custom_toast, null);
 
         // Initiate the Toast instance.
         Toast toast = new Toast(getApplicationContext());
         text = (TextView)toastView.findViewById(R.id.customToastText);
         img = (ImageView)toastView.findViewById(R.id.customToastImage);
+
         // Set custom view in toast.
         img.setImageResource(icon);
         text.setText(message);
@@ -404,15 +405,16 @@ public class MainActivity extends AppCompatActivity {
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+
                 // Fill with actual results from user
                 if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++)
                         perms.put(permissions[i], grantResults[i]);
+
                     // Check for both permissions
                     if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
-                        //else any one or both the permissions are not granted
                     } else {
 
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
