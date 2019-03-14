@@ -25,7 +25,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -244,19 +243,19 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
                     if(response.code() == 200){
-                        showToast( "Code: " + response.code() + " Success", R.drawable.okay);
+                        showToast( " Registro Exitoso", R.drawable.okay);
                     }else if(response.code() == 201){
-                        showToast( "Code: " + response.code() + " Sin Contenido", R.drawable.warning);
+                        showToast( " Sin Contenido", R.drawable.warning);
                     }else if(response.code() == 202){
-                        showToast( "Code: " + response.code() + " Error 202: Error al enviar Datos", R.drawable.warning);
+                        showToast( " Error 202: Error al enviar Datos", R.drawable.warning);
                     }else if(response.code() == 203){
-                        showToast( "Code: " + response.code() + " Reserva no encontrada", R.drawable.warning);
+                        showToast( " Reserva no encontrada", R.drawable.warning);
                     }else if(response.code() == 204){
-                        showToast( "Code: " + response.code() + " Error 204: Error al enviar Datos", R.drawable.warning);
+                        showToast( " Error 204: Error al enviar Datos", R.drawable.warning);
                     }else if(response.code() == 205){
-                        showToast( "Code: " + response.code() + " Codigo registrado anteriormente", R.drawable.warning);
+                        showToast( " Codigo registrado anteriormente", R.drawable.warning);
                     }else if(response.code() == 404){
-                        showToast( "Code: " + response.code() + " Sin Conexion con el Servidor", R.drawable.warning);
+                        showToast( " Sin Conexion con el Servidor", R.drawable.warning);
                     }else{
                         showToast( "...? GG", R.drawable.warning);
                     }
