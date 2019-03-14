@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSetImage = (ImageView) findViewById(R.id.wall);
-
         scan = (Button)findViewById(R.id.button);
 
         checkAndroidVersion();
@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick2(View v) {
+
         CustomDialogClass cdd = new CustomDialogClass(MainActivity.this);
         cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         cdd.show();
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showOptions() {
+
         final CharSequence[] option = {"Tomar foto", "Elegir de galería", "Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Eleige una opción");
@@ -130,11 +132,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show();
+
     }
 
     private void openCamera() {
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         boolean isDirectoryCreated = file.exists();
 
@@ -186,8 +191,10 @@ public class MainActivity extends AppCompatActivity {
 
                     Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(mPath), 400,450, true);
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    bitmap = test(bitmap);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
                     mSetImage.setImageBitmap(bitmap);
+
 
                     // Assume block needs to be inside a Try/Catch block.
                     OutputStream fOut = null;
@@ -198,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fOut); // saving the Bitmap to a file compressed
                     try {
                         fOut.flush();
                         fOut.close();
@@ -264,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
 
-                    Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    showToast("Error: " + t.getMessage(), R.drawable.cancel);
 
                 }
             });
@@ -454,6 +461,29 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Salir", okListener)
                 .create()
                 .show();
+    }
+
+    public static Bitmap test(Bitmap src){
+        Bitmap dest = Bitmap.createBitmap(
+                src.getWidth(), src.getHeight(), src.getConfig());
+
+        for(int x = 0; x < src.getWidth(); x++){
+            for(int y = 0; y < src.getHeight(); y++){
+                int pixelColor = src.getPixel(x, y);
+                int pixelAlpha = Color.alpha(pixelColor);
+                int pixelRed = Color.red(pixelColor);
+                int pixelGreen = Color.green(pixelColor);
+                int pixelBlue = Color.blue(pixelColor);
+
+                int pixelBW = (pixelRed + pixelGreen + pixelBlue)/3;
+                int newPixel = Color.argb(
+                        pixelAlpha, pixelBW, pixelBW, pixelBW);
+
+                dest.setPixel(x, y, newPixel);
+            }
+        }
+
+        return dest;
     }
 
 }
