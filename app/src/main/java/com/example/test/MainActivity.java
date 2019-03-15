@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.os.VibrationEffect;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -56,6 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.os.Vibrator;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_QR_SCAN = 101;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private String mPath;
     private ImageView mSetImage;
     private Button scan;
+    Vibrator v;
 
 
     @Override
@@ -83,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mSetImage = (ImageView) findViewById(R.id.wall);
         scan = (Button)findViewById(R.id.button);
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         checkAndroidVersion();
-
     }
 
     public void onClick(View v) {
@@ -324,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                         }else{
 
                             showToast("Sin conexión a la Red", R.drawable.cancel);
+                            vibrate(500);
 
                         }
                     }
@@ -332,6 +336,16 @@ public class MainActivity extends AppCompatActivity {
                 // Do nothing.
             }
         }).show();
+    }
+
+    private void vibrate(int mill) {
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(mill, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(mill);
+        }
     }
 
     private static boolean isOnline(Context context) {
