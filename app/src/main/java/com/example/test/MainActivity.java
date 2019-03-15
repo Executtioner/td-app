@@ -24,13 +24,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,17 +78,20 @@ public class MainActivity extends AppCompatActivity {
     private String mPath;
     private ImageView mSetImage;
     private Button scan;
-    Vibrator v;
-
+    private Vibrator v;
+    private ImageButton im;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        setTheme(R.style.AppTheme);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSetImage = (ImageView) findViewById(R.id.wall);
         scan = (Button)findViewById(R.id.button);
+        im = (ImageButton)findViewById(R.id.imgB);
+
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         checkAndroidVersion();
@@ -113,6 +119,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onClick4(View v) {
+
+        im.animate().rotation(im.getRotation()-360).setDuration(1000).start();
+        im.animate().translationX(+300).setStartDelay(100).start();
+        im.animate().translationY(-200).setStartDelay(200).start();
+        //im.animate().translationX(im.getTranslationX()+100).setStartDelay(300).start();
+        im.animate().translationX(+200).setStartDelay(400).start();
+        im.animate().translationX(-400).setStartDelay(500).start();
+
+    }
+
     private void showOptions() {
 
         final CharSequence[] option = {"Tomar foto", "Elegir de galería", "Cancelar"};
@@ -134,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         builder.show();
 
     }
@@ -295,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
         travelers.setFilters(FilterArray);
         travelers.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
+        final AlertDialog al = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
 
                 .setCustomTitle(title)
                 .setMessage("Ingresar la cantidad de asistentes")
@@ -336,6 +354,52 @@ public class MainActivity extends AppCompatActivity {
                 // Do nothing.
             }
         }).show();
+
+        ((AlertDialog) al).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        travelers.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String v = travelers.getText().toString();
+
+                try {
+
+                    if (v == null) {
+
+                        travelers.setError("Ingrese un número");
+                        ((AlertDialog) al).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+                    }else {
+                        ((AlertDialog) al).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                    }
+
+                    if(Integer.parseInt(v) <=0){
+                        travelers.setError("El número debe ser mayor a 0");
+                        ((AlertDialog) al).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+                    }else {
+                        ((AlertDialog) al).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                    }
+
+                }catch (Exception e){
+
+                    ((AlertDialog) al).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                    travelers.setError("Ingrese un número");
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
     }
 
     private void vibrate(int mill) {

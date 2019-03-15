@@ -117,6 +117,16 @@
                 android:drawableLeft="@drawable/qr"
                 />
 
+            <ImageButton
+                android:id="@+id/imgB"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/qr"
+                android:onClick="onClick4"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                />
+
         </LinearLayout>
 
     </ScrollView>
