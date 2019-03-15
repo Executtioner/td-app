@@ -336,10 +336,14 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             if(trav == 0 ){
+
                                 showToast("El número debe ser mayor a 0", R.drawable.warning);
+
                             }else {
+
                                 showToast("Registrando...", R.drawable.hiker);
                                 create(bn, trav);
+
                             }
 
                         }else{
@@ -403,11 +407,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void vibrate(int mill) {
-        // Vibrate for 500 milliseconds
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
             v.vibrate(VibrationEffect.createOneShot(mill, VibrationEffect.DEFAULT_AMPLITUDE));
+
         } else {
-            //deprecated in API 26
+
             v.vibrate(mill);
         }
     }
@@ -476,6 +482,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return false;
+
     }
 
 
