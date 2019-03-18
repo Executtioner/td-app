@@ -19,6 +19,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +29,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -88,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mSetImage = (ImageView) findViewById(R.id.wall);
         scan = (Button)findViewById(R.id.button);
         im = (ImageButton)findViewById(R.id.imgB);
-
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         checkAndroidVersion();
@@ -216,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
                     mSetImage.setImageBitmap(bitmap);
 
+                    byte[] b = byteArrayOutputStream.toByteArray();
+                    String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
                     // Assume block needs to be inside a Try/Catch block.
                     OutputStream fOut = null;
@@ -225,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fOut); // saving the Bitmap to a file compressed
                     try {
                         fOut.flush();
@@ -285,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                     }else if(response.code() == 404){
                         showToast( " Sin Conexion con el Servidor", R.drawable.warning);
                     }else{
-                        showToast( "...? GG", R.drawable.warning);
+                        showToast( "...? GG - " + response.code(), R.drawable.warning);
                     }
                 }
 
@@ -309,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
         travelers.setGravity(Gravity.CENTER);
         travelers.setTextSize(30);
         InputFilter[] FilterArray = new InputFilter[1];
-        FilterArray[0] = new InputFilter.LengthFilter(4);
+        FilterArray[0] = new InputFilter.LengthFilter(3);
         travelers.setFilters(FilterArray);
         travelers.setInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -529,7 +532,12 @@ public class MainActivity extends AppCompatActivity {
 
                         else {
 
-                            System.exit(0);
+                            showToast("Permisos de cámara y almacenamiento necesarios.", R.drawable.warning);
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+                            intent.setData(uri);
+                            this.startActivity(intent);
 
                         }
                     }
