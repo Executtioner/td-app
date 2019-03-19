@@ -121,7 +121,7 @@
                 android:textSize="20dp"
                 android:text="CAM"
                 android:drawableLeft="@drawable/qr"
-                android:theme="@style/MyButton"/>
+                android:theme="@style/MyButton"
                 />
 
             <ImageButton
