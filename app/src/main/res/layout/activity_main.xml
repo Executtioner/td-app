@@ -61,16 +61,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginRight="3dp"
         >
 
         <ImageView
-            android:layout_width="390dp"
+            android:layout_width="match_parent"
             android:id="@+id/wall"
             android:layout_gravity="center"
-            android:layout_height="390dp"
+            android:layout_height="wrap_content"
             android:src="@drawable/wall"
 
             />
@@ -104,6 +103,7 @@
                 android:onClick="onClick2"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
+                android:textColor="@color/colorAccentDark"
                 android:textSize="20dp"
                 android:text="Open Dialog Test"
                 android:drawableLeft="@drawable/qr"

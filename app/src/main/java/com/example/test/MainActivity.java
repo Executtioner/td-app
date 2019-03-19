@@ -22,11 +22,9 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -71,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_QR_SCAN = 101;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private  int trav = 0;
+    private  String bn = null;
     private TextView text;
     private ImageView img;
     //private final static String API_KEY = "";
@@ -222,13 +222,12 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(mPath), 400,450, true);
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap = test(bitmap);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
                     mSetImage.setImageBitmap(bitmap);
 
                     byte[] b = byteArrayOutputStream.toByteArray();
                     String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
-                    // Assume block needs to be inside a Try/Catch block.
                     OutputStream fOut = null;
                     File file = new File(mPath);
                     try {
@@ -236,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fOut); // saving the Bitmap to a file compressed
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fOut);
                     try {
                         fOut.flush();
                         fOut.close();
@@ -244,6 +243,8 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    create(bn, trav);
 
                     break;
 
@@ -308,7 +309,9 @@ public class MainActivity extends AppCompatActivity {
             });
     }
 
-    public void createLoginDialogo(final String bn) {
+    public void createLoginDialogo(final String bno) {
+
+        bn = bno;
 
         final TextView title = new TextView(this);
         title.setText("Confirmación");
@@ -332,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Ingresar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                        Integer trav = 0;
+
                         if(isOnline(getApplicationContext())!=false){
 
                             try {
@@ -351,9 +354,9 @@ public class MainActivity extends AppCompatActivity {
 
                             }else {
 
-                                showToast("Registrando...", R.drawable.hiker, Toast.LENGTH_SHORT);
-                                create(bn, trav);
-
+                                //showToast("Registrando...", R.drawable.hiker, Toast.LENGTH_SHORT);
+                                //create(bn, trav);
+                                openCamera();
                             }
 
                         }else{
