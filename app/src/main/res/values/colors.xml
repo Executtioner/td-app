@@ -12,5 +12,6 @@
     <color name="colorGrey">#707070</color>
     <color name="colorGreyLight">#8A8A8A</color>
     <color name="yellow">#ffff33</color>
+    <color name="back">#23074d</color>
 
 </resources>

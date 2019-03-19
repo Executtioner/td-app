@@ -22,9 +22,11 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -37,6 +39,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.blikoon.qrcodescanner.QrCodeActivity;
@@ -63,6 +66,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.os.Vibrator;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_QR_SCAN = 101;
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private Button scan;
     private Vibrator v;
     private ImageButton im;
+    private LinearLayout ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         scan = (Button)findViewById(R.id.button);
         im = (ImageButton)findViewById(R.id.imgB);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        ll = (LinearLayout)findViewById(R.id.lila);
+        ll.bringToFront();
 
         checkAndroidVersion();
     }
@@ -274,28 +281,28 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
                     if(response.code() == 200){
-                        showToast( " Registro Exitoso", R.drawable.okay);
+                        showToast( " Registro Exitoso", R.drawable.okay, Toast.LENGTH_SHORT);
                     }else if(response.code() == 201){
-                        showToast( " Sin Contenido", R.drawable.warning);
+                        showToast( " Sin Contenido", R.drawable.warning, Toast.LENGTH_SHORT);
                     }else if(response.code() == 202){
-                        showToast( " Error 202: Error al enviar Datos", R.drawable.warning);
+                        showToast( " Error 202: Error al enviar Datos", R.drawable.warning, Toast.LENGTH_SHORT);
                     }else if(response.code() == 203){
-                        showToast( " Reserva no encontrada", R.drawable.warning);
+                        showToast( " Reserva no encontrada", R.drawable.warning, Toast.LENGTH_SHORT);
                     }else if(response.code() == 204){
-                        showToast( " Error 204: Error al enviar Datos", R.drawable.warning);
+                        showToast( " Error 204: Error al enviar Datos", R.drawable.warning, Toast.LENGTH_SHORT);
                     }else if(response.code() == 205){
-                        showToast( " Codigo registrado anteriormente", R.drawable.warning);
+                        showToast( " Codigo registrado anteriormente", R.drawable.warning, Toast.LENGTH_SHORT);
                     }else if(response.code() == 404){
-                        showToast( " Sin Conexion con el Servidor", R.drawable.warning);
+                        showToast( " Sin Conexion con el Servidor", R.drawable.warning, Toast.LENGTH_SHORT);
                     }else{
-                        showToast( "...? GG - " + response.code(), R.drawable.warning);
+                        showToast( "...? GG - " + response.code(), R.drawable.warning, Toast.LENGTH_SHORT);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
 
-                    showToast("Error: " + t.getMessage(), R.drawable.cancel);
+                    showToast("Error: " + t.getMessage(), R.drawable.cancel, Toast.LENGTH_SHORT);
 
                 }
             });
@@ -334,24 +341,24 @@ public class MainActivity extends AppCompatActivity {
 
                             }catch (Exception e){
 
-                                showToast("Debe ingresar un número", R.drawable.warning);
+                                showToast("Debe ingresar un número", R.drawable.warning, Toast.LENGTH_SHORT);
 
                             }
 
                             if(trav == 0 ){
 
-                                showToast("El número debe ser mayor a 0", R.drawable.warning);
+                                showToast("El número debe ser mayor a 0", R.drawable.warning, Toast.LENGTH_SHORT);
 
                             }else {
 
-                                showToast("Registrando...", R.drawable.hiker);
+                                showToast("Registrando...", R.drawable.hiker, Toast.LENGTH_SHORT);
                                 create(bn, trav);
 
                             }
 
                         }else{
 
-                            showToast("Sin conexión a la Red", R.drawable.cancel);
+                            showToast("Sin conexión a la Red", R.drawable.cancel, Toast.LENGTH_LONG);
                             vibrate(500);
 
                         }
@@ -429,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showToast(String message, int icon)
+    private void showToast(String message, int icon, int duration)
     {
 
         View toastView = getLayoutInflater().inflate(R.layout.custom_toast, null);
@@ -443,7 +450,7 @@ public class MainActivity extends AppCompatActivity {
         img.setImageResource(icon);
         text.setText(message);
         toast.setView(toastView);
-        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setDuration(duration);
         toast.setGravity(Gravity.CENTER, 0,0);
         toast.show();
 
@@ -457,7 +464,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             // code for lollipop and pre-lollipop devices
-            showToast("OLD", R.drawable.okay);
+            showToast("OLD", R.drawable.okay, Toast.LENGTH_SHORT);
 
         }
 
@@ -532,7 +539,7 @@ public class MainActivity extends AppCompatActivity {
 
                         else {
 
-                            showToast("Permisos de cámara y almacenamiento necesarios.", R.drawable.warning);
+                            showToast("Permisos de cámara y almacenamiento necesarios.", R.drawable.warning, Toast.LENGTH_LONG);
                             Intent intent = new Intent();
                             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                             Uri uri = Uri.fromParts("package", this.getPackageName(), null);
